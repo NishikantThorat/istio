@@ -1,0 +1,13 @@
+language: go
+go: 1.17.5
+os: linux
+dist: focal
+arch: ppc64le
+env:
+        global:
+                - PATH="$PATH:/usr/local/go/bin"
+                - BUILD_WITH_CONTAINER=0
+script:
+        - make
+        - make test
+        - SCRIPT_PID=$!;while ps -p $SCRIPT_PID > /dev/null;do echo "$SCRIPT_PID is running"; sleep 300; done; wait $SCRIPT_PID; my_pid_status=$?; travis_terminate $my_pid_status
